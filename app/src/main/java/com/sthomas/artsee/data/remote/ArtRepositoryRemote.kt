@@ -1,53 +1,24 @@
 package com.sthomas.artsee.data.remote
 
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
 import com.sthomas.artsee.data.remote.dto.Artwork
 import com.sthomas.artsee.domain.Art
 import com.sthomas.artsee.domain.ArtPreview
 import com.sthomas.artsee.domain.ArtRepository
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ArtRepositoryRemote(
-    val artRemoteAPI: ArtRemoteAPI
-) : ArtRepository, PagingSource<Int, ArtPreview>() {
-    override fun getPagingArt(): Flow<PagingData<ArtPreview>> {
+class ArtRepositoryRemote @Inject constructor(
+    private val artRemoteAPI: ArtRemoteAPI
+) : ArtRepository {
+
+    override suspend fun getArtPreviews(page: Int, limit: Int): List<ArtPreview> {
+        return artRemoteAPI.getArtList(page, limit).artwork
+            .map {
+                it.toArtPreview()
+            }
+    }
+
+    override suspend fun getArt(id: String): Art {
         TODO("Not yet implemented")
-
-    }
-
-    override fun getArt(id: String): Art {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArtPreview> {
-        try {
-            val page = params.key ?: 1
-            val artworkList = artRemoteAPI.getArtList(
-                page = page,
-                limit = 20
-            ).artwork
-
-            val artPreviewList = artworkList.map { it.toArtPreview() }
-
-            return LoadResult.Page(
-                data = artPreviewList,
-                prevKey = null, // only page forward
-                nextKey = page + 1
-            )
-        } catch (e: Exception) {
-            // Handle errors in this block and return LoadResult.Error if it is an
-            // expected error (such as a network failure).
-            throw e
-        }
-
-    }
-
-    override fun getRefreshKey(state: PagingState<Int, ArtPreview>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey
-        }
     }
 
     private fun Artwork.toArtPreview() = ArtPreview(
