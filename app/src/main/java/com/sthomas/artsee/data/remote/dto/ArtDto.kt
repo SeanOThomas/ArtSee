@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Artwork(
+data class ArtDto(
     val id: String,
     val title: String,
     @SerialName("artist_title")

@@ -1,20 +1,20 @@
-package com.sthomas.artsee.presentation
+package com.sthomas.artsee.presentation.explore
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.sthomas.artsee.domain.ArtPreview
-import com.sthomas.artsee.domain.ArtRepository
+import com.sthomas.artsee.domain.model.ArtPreview
+import com.sthomas.artsee.domain.repository.ArtRepository
 import javax.inject.Inject
 
-class ArtPagingSource @Inject constructor(
+class ExplorePagingSource @Inject constructor(
     private val artRepository: ArtRepository
 ) :  PagingSource<Int, ArtPreview>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArtPreview> {
         return try {
             val page = params.key ?: 1
-            val artworkList = artRepository.getArtPreviews(
+            val artworkList = artRepository.getPagedArtPreviews(
                 page = page,
-                limit = 20
+                limit = params.loadSize
             )
             LoadResult.Page(
                 data = artworkList,

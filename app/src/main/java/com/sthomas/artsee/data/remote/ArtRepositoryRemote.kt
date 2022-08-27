@@ -1,17 +1,17 @@
 package com.sthomas.artsee.data.remote
 
-import com.sthomas.artsee.data.remote.dto.Artwork
-import com.sthomas.artsee.domain.Art
-import com.sthomas.artsee.domain.ArtPreview
-import com.sthomas.artsee.domain.ArtRepository
+import com.sthomas.artsee.data.remote.dto.ArtDto
+import com.sthomas.artsee.domain.model.Art
+import com.sthomas.artsee.domain.model.ArtPreview
+import com.sthomas.artsee.domain.repository.ArtRepository
 import javax.inject.Inject
 
 class ArtRepositoryRemote @Inject constructor(
     private val artRemoteAPI: ArtRemoteAPI
 ) : ArtRepository {
 
-    override suspend fun getArtPreviews(page: Int, limit: Int): List<ArtPreview> {
-        return artRemoteAPI.getArtList(page, limit).artwork
+    override suspend fun getPagedArtPreviews(page: Int, limit: Int): List<ArtPreview> {
+        return artRemoteAPI.getArtList(page, limit).artDtoList
             .map {
                 it.toArtPreview()
             }
@@ -21,7 +21,11 @@ class ArtRepositoryRemote @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    private fun Artwork.toArtPreview() = ArtPreview(
+    override suspend fun saveArt(art: Art) = throw IllegalStateException("Not supported")
+
+    override suspend fun getArtPreviews(): List<ArtPreview> = throw IllegalStateException("Not supported")
+
+    private fun ArtDto.toArtPreview() = ArtPreview(
         artId = id,
         thumbnail = "https://www.artic.edu/iiif/2/${id}/full/843,/0/default.jpg"
     )

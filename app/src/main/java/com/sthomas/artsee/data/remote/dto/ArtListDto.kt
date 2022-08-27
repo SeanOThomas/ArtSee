@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ArtworkResponse(
+data class ArtListDto(
     @SerialName("data")
-    val artwork: List<Artwork>
+    val artDtoList: List<ArtDto>
 )
