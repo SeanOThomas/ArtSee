@@ -13,7 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sthomas.artsee.ui.theme.ArtSeeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.setValue
-import com.sthomas.artsee.data.storage.datasctore
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
