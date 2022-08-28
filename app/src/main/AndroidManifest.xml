@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sthomas.artsee">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".ArtSeeApp"
         android:allowBackup="true"

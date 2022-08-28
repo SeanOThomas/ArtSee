@@ -16,7 +16,7 @@ class ArtRepositoryStorage(
     private val context: Context
 ) : ArtRepository {
 
-    override suspend fun getArtPreviews(): Flow<List<ArtPreview>> {
+    override fun getArtPreviews(): Flow<List<ArtPreview>> {
         return context.datastore.data.map { it.toArtPreviews() }
     }
 

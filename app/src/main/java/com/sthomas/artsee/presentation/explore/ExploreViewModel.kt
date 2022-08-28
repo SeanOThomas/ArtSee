@@ -17,7 +17,7 @@ class ExploreViewModel @Inject constructor(
     private val artRepository: ArtRepository,
 ) : ViewModel() {
 
-    val flow = Pager(
+    val exploreArtPager = Pager(
         PagingConfig(pageSize = 20)
     ) {
         ExplorePagingSource(artRepository)

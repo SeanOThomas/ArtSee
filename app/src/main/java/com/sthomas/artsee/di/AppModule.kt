@@ -9,10 +9,12 @@ import com.sthomas.artsee.domain.repository.ArtRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Named
@@ -26,8 +28,7 @@ object AppModule {
     @Singleton
     @OptIn(ExperimentalSerializationApi::class)
     fun provideArtRemoteApi() : ArtRemoteAPI {
-        val contentType = MediaType.parse("application/json")
-        requireNotNull(contentType)
+        val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
             .baseUrl("https://api.artic.edu/api/v1/")
             .addConverterFactory(Json.asConverterFactory(contentType))
@@ -45,7 +46,7 @@ object AppModule {
     @Provides
     @Singleton
     @Named(Keys.saved)
-    fun provideSavedArtRepository(context: Context) : ArtRepository {
+    fun provideSavedArtRepository(@ApplicationContext context: Context) : ArtRepository {
         return ArtRepositoryStorage(context)
     }
 }

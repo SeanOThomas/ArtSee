@@ -6,10 +6,11 @@ import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.domain.repository.ArtRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-class SavedViewModel(
+class SavedViewModel @Inject constructor(
     @Named(Keys.saved)
     private val artRepository: ArtRepository
 ) : ViewModel() {
