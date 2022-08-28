@@ -9,7 +9,8 @@ interface ArtRemoteAPI {
     @GET("artworks")
     suspend fun getArtList(
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("is_on_view") isOnView: Boolean = true
     ): ArtListDto
 }
 

@@ -12,7 +12,9 @@ class ArtRepositoryRemote @Inject constructor(
 ) : ArtRepository {
 
     override suspend fun getPagedArtPreviews(page: Int, limit: Int): List<ArtPreview> {
-        return artRemoteAPI.getArtList(page, limit).artDtoList.map { it.toArtPreview() }
+        return artRemoteAPI.getArtList(page, limit).artDtoList
+            .filter { it.imageId != null }
+            .map { it.toArtPreview() }
     }
 
     override suspend fun getArt(id: String): Art {
@@ -25,6 +27,6 @@ class ArtRepositoryRemote @Inject constructor(
 
     private fun ArtDto.toArtPreview() = ArtPreview(
         artId = id.toString(),
-        thumbnail = "https://www.artic.edu/iiif/2/${id}/full/843,/0/default.jpg"
+        thumbnail = "https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg"
     )
 }

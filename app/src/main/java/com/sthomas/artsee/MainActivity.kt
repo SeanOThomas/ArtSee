@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,23 +56,26 @@ class MainActivity : ComponentActivity() {
                     if (selectedTabIndex == 0) {
                         println("Explore tab")
                         val exploreViewModel = hiltViewModel<ExploreViewModel>()
-                        val pagingArtPreviews = exploreViewModel.exploreArtPager.collectAsLazyPagingItems()
+                        val pagingArtPreviews =
+                            exploreViewModel.exploreArtPager.collectAsLazyPagingItems()
                         println(pagingArtPreviews.itemCount)
                         LazyVerticalGrid(
-                            columns = GridCells.Adaptive(minSize = 128.dp)
+                            columns = GridCells.Adaptive(minSize = 145.dp),
+                            contentPadding = PaddingValues(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             items(pagingArtPreviews.itemCount) { index ->
                                 pagingArtPreviews[index]?.let {
-//                                    PreviewCard(it)
-                                    RectangleShapeDemo(it)
-
+                                    PreviewCard(it)
                                 }
                             }
                         }
                     } else {
                         println("Saved tab")
                         val savedViewModel = hiltViewModel<SavedViewModel>()
-                        val artList = savedViewModel.getSavedArtPreviews().collectAsState(initial = listOf()).value
+                        val artList = savedViewModel.getSavedArtPreviews()
+                            .collectAsState(initial = listOf()).value
                         if (artList.isEmpty()) {
                             // TODO show empty list
                         } else {
@@ -85,25 +89,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun RectangleShapeDemo(artPreview: ArtPreview){
-    ExampleBox(shape = RectangleShape, artPreview)
-}
-
-@Composable
-fun ExampleBox(shape: Shape, artPreview: ArtPreview){
-    Box(
-        modifier = Modifier.size(100.dp).clip(shape).background(Color.Red)
-    ) {
-        Text(artPreview.artId)
-    }
-}
-
-@Composable
 fun PreviewCard(artPreview: ArtPreview) {
-    AsyncImage(
-        model = artPreview.thumbnail,
-        contentDescription = null
-    )
+    Box(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        AsyncImage(
+            model = artPreview.thumbnail,
+            contentDescription = null,
+        )
+    }
 }
 
 @Composable
