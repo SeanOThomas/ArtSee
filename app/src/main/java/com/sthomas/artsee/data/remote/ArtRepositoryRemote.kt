@@ -12,10 +12,7 @@ class ArtRepositoryRemote @Inject constructor(
 ) : ArtRepository {
 
     override suspend fun getPagedArtPreviews(page: Int, limit: Int): List<ArtPreview> {
-        return artRemoteAPI.getArtList(page, limit).artDtoList
-            .map {
-                it.toArtPreview()
-            }
+        return artRemoteAPI.getArtList(page, limit).artDtoList.map { it.toArtPreview() }
     }
 
     override suspend fun getArt(id: String): Art {
@@ -27,7 +24,7 @@ class ArtRepositoryRemote @Inject constructor(
     override fun getArtPreviews(): Flow<List<ArtPreview>> = throw IllegalStateException("Not supported")
 
     private fun ArtDto.toArtPreview() = ArtPreview(
-        artId = id,
+        artId = id.toString(),
         thumbnail = "https://www.artic.edu/iiif/2/${id}/full/843,/0/default.jpg"
     )
 }

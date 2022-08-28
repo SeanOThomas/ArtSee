@@ -1,5 +1,6 @@
 package com.sthomas.artsee.presentation.explore
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sthomas.artsee.domain.model.ArtPreview
@@ -14,14 +15,16 @@ class ExplorePagingSource @Inject constructor(
             val page = params.key ?: 1
             val artworkList = artRepository.getPagedArtPreviews(
                 page = page,
-                limit = params.loadSize
+                limit = 20
             )
+            Log.d(TAG, "artworkList size: ${artworkList.size}")
             LoadResult.Page(
                 data = artworkList,
                 prevKey = null, // only page forward
                 nextKey = page + 1
             )
         } catch (e: Exception) {
+            Log.e(TAG, "Error requesting paged data: $e")
             LoadResult.Error(e)
         }
     }
@@ -30,5 +33,8 @@ class ExplorePagingSource @Inject constructor(
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey
         }
+    }
+    companion object {
+        const val TAG = "ExplorePagingSource"
     }
 }
