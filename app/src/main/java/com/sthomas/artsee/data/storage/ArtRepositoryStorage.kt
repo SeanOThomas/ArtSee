@@ -2,6 +2,7 @@ package com.sthomas.artsee.data.storage
 
 import android.content.Context
 import androidx.datastore.dataStore
+import com.sthomas.artsee.data.storage.dto.SavedArtDto
 import com.sthomas.artsee.domain.model.Art
 import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.domain.repository.ArtRepository
@@ -16,8 +17,7 @@ class ArtRepositoryStorage(
 ) : ArtRepository {
 
     override suspend fun getArtPreviews(): Flow<List<ArtPreview>> {
-        // TODO clean up
-        return context.datastore.data.map { it.artList.map { ArtPreview("","") } }
+        return context.datastore.data.map { it.toArtPreviews() }
     }
 
     override suspend fun getPagedArtPreviews(page: Int, limit: Int): List<ArtPreview> {
@@ -35,4 +35,9 @@ class ArtRepositoryStorage(
             )
         }
     }
+
+    private fun SavedArtDto.toArtPreviews() = artList.map {
+        ArtPreview(it.id, it.imageUrl)
+    }
+
 }

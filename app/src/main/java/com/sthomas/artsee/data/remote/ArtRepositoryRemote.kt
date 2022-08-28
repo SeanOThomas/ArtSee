@@ -4,6 +4,7 @@ import com.sthomas.artsee.data.remote.dto.ArtDto
 import com.sthomas.artsee.domain.model.Art
 import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.domain.repository.ArtRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ArtRepositoryRemote @Inject constructor(
@@ -23,7 +24,7 @@ class ArtRepositoryRemote @Inject constructor(
 
     override suspend fun saveArt(art: Art) = throw IllegalStateException("Not supported")
 
-    override suspend fun getArtPreviews(): List<ArtPreview> = throw IllegalStateException("Not supported")
+    override fun getArtPreviews(): Flow<List<ArtPreview>> = throw IllegalStateException("Not supported")
 
     private fun ArtDto.toArtPreview() = ArtPreview(
         artId = id,

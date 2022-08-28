@@ -1,8 +1,10 @@
 package com.sthomas.artsee.di
 
+import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sthomas.artsee.data.remote.ArtRemoteAPI
 import com.sthomas.artsee.data.remote.ArtRepositoryRemote
+import com.sthomas.artsee.data.storage.ArtRepositoryStorage
 import com.sthomas.artsee.domain.repository.ArtRepository
 import dagger.Module
 import dagger.Provides
@@ -43,8 +45,7 @@ object AppModule {
     @Provides
     @Singleton
     @Named(Keys.saved)
-    fun provideSavedArtRepository(artRemoteAPI: ArtRemoteAPI) : ArtRepository {
-        // TODO inject storage
-        return ArtRepositoryRemote(artRemoteAPI)
+    fun provideSavedArtRepository(context: Context) : ArtRepository {
+        return ArtRepositoryStorage(context)
     }
 }
