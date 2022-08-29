@@ -34,8 +34,7 @@ fun ArtSeeNavHost(
             "${Routes.artDetail}/{${Args.artId}}",
             arguments = listOf(navArgument(Args.artId) { type = NavType.StringType })
         ) {
-            val artId = checkNotNull(it.arguments?.getString(Args.artId))
-            ArtDetailScreen(artId)
+            ArtDetailScreen()
         }
     }
 }

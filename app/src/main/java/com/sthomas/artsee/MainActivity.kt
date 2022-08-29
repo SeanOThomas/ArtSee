@@ -37,7 +37,9 @@ import coil.compose.AsyncImage
 import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.presentation.explore.ExploreViewModel
 import com.sthomas.artsee.presentation.saved.SavedViewModel
+import com.sthomas.artsee.ui.ArtSeeNavHost
 import com.sthomas.artsee.ui.ExploreList
+import com.sthomas.artsee.ui.MainScreen
 import com.sthomas.artsee.ui.SavedList
 import com.sthomas.artsee.ui.theme.ArtSeeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,25 +51,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ArtSeeTheme {
-                val tabs = listOf("Explore", "Saved")
-                var selectedTabIndex by remember { mutableStateOf(0) }
-                Column {
-                    TabRow(selectedTabIndex = selectedTabIndex) {
-                        tabs.forEachIndexed { index, text ->
-                            Tab(
-                                selected = selectedTabIndex == index,
-                                onClick = { selectedTabIndex = index },
-                                text = { Text(text = text) }
-                            )
-                        }
-
-                    }
-                    if (selectedTabIndex == 0) {
-                        ExploreList()
-                    } else {
-                        SavedList()
-                    }
-                }
+                ArtSeeNavHost()
             }
         }
     }

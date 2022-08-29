@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,16 +12,15 @@ import coil.compose.AsyncImage
 import com.sthomas.artsee.presentation.art_detail.ArtDetailViewModel
 
 @Composable
-fun ArtDetailScreen(artId: String) {
-    val artDetailViewModel = hiltViewModel<ArtDetailViewModel>().apply {
-        loadArtDetail(artId)
-    }
+fun ArtDetailScreen(
+    artDetailViewModel: ArtDetailViewModel = hiltViewModel()
+) {
     val state = artDetailViewModel.state
     if (state.isLoading) {
         CircularProgressIndicator()
     } else {
         requireNotNull(state.art)
-        with (state.art) {
+        with(state.art) {
             Column {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     AsyncImage(
