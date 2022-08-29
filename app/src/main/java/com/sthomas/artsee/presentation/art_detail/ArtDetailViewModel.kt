@@ -17,10 +17,11 @@ class ArtDetailViewModel @Inject constructor(
     @Named(Keys.remote)
     private val remoteRepository: ArtRepository,
     @Named(Keys.storage)
-    private val storageRepository: ArtRepository
+    private val storageRepository: ArtRepository,
+    initialState: ArtDetailState
 ) : ViewModel() {
 
-    var state by mutableStateOf(ArtDetailState())
+    var state by mutableStateOf(initialState)
         private set
 
     fun loadArtDetail(artId: String) {

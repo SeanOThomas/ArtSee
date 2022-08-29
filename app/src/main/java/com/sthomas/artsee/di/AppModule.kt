@@ -5,7 +5,9 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.sthomas.artsee.data.remote.ArtRemoteAPI
 import com.sthomas.artsee.data.remote.ArtRepositoryRemote
 import com.sthomas.artsee.data.storage.ArtRepositoryStorage
+import com.sthomas.artsee.domain.model.Art
 import com.sthomas.artsee.domain.repository.ArtRepository
+import com.sthomas.artsee.presentation.art_detail.ArtDetailState
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

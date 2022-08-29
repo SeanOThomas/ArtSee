@@ -37,6 +37,8 @@ import coil.compose.AsyncImage
 import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.presentation.explore.ExploreViewModel
 import com.sthomas.artsee.presentation.saved.SavedViewModel
+import com.sthomas.artsee.ui.ExploreList
+import com.sthomas.artsee.ui.SavedList
 import com.sthomas.artsee.ui.theme.ArtSeeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,9 +49,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ArtSeeTheme {
-
-
-
                 val tabs = listOf("Explore", "Saved")
                 var selectedTabIndex by remember { mutableStateOf(0) }
                 Column {
@@ -64,38 +63,9 @@ class MainActivity : ComponentActivity() {
 
                     }
                     if (selectedTabIndex == 0) {
-                        println("Explore tab")
-                        val exploreViewModel = hiltViewModel<ExploreViewModel>()
-                        val pagingArtPreviews =
-                            exploreViewModel.exploreArtPager.collectAsLazyPagingItems()
-                        println(pagingArtPreviews.itemCount)
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(minSize = 145.dp),
-                            contentPadding = PaddingValues(10.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            items(pagingArtPreviews.itemCount) { index ->
-                                pagingArtPreviews[index]?.let {
-                                    PreviewCard(it)
-                                }
-                            }
-                            if (pagingArtPreviews.loadState.append is LoadState.Loading) {
-                                item {
-                                    LoadingSpinner()
-                                }
-                            }
-                        }
+                        ExploreList()
                     } else {
-                        println("Saved tab")
-                        val savedViewModel = hiltViewModel<SavedViewModel>()
-                        val artList = savedViewModel.getSavedArtPreviews()
-                            .collectAsState(initial = listOf()).value
-                        if (artList.isEmpty()) {
-                            // TODO show empty list
-                        } else {
-                            // TODO show list
-                        }
+                        SavedList()
                     }
                 }
             }
@@ -104,59 +74,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyAppNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    startDestination: String = "profile"
-) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = startDestination
-    ) {
-        composable("profile") {
-            ProfileScreen(
-                onNavigateToFriends = { navController.navigate("friendsList") },
-                /*...*/
-            )
-        }
-        composable("friendslist") { FriendsListScreen(/*...*/) }
-    }
-}
-
-@Composable
-fun PreviewCard(artPreview: ArtPreview) {
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        AsyncImage(
-            model = artPreview.thumbnail,
-            contentDescription = null,
-        )
-    }
-}
-
-@Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
-@Composable
-fun LoadingSpinner() {
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    ) {
-        CircularProgressIndicator(
-            Modifier
-                .width(42.dp)
-                .height(42.dp)
-                .padding(8.dp),
-            strokeWidth = 5.dp
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
