@@ -7,6 +7,6 @@ data class Art(
     val id: String,
     val title: String,
     val imageUrl: String,
-    val artistName: String,
-    val year: String
+    val artistName: String?,
+    val year: String?
 )

@@ -8,9 +8,12 @@ import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.domain.repository.ArtRepository
 import kotlinx.collections.immutable.plus
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
-val Context.datastore by dataStore("saved-art.json", SavedArtSerializer)
+private val Context.datastore by dataStore("saved-art.json", SavedArtSerializer)
 
 class ArtRepositoryStorage(
     private val context: Context
@@ -20,12 +23,14 @@ class ArtRepositoryStorage(
         return context.datastore.data.map { it.toArtPreviews() }
     }
 
-    override suspend fun getPagedArtPreviews(page: Int, limit: Int): List<ArtPreview> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getPagedArtPreviews(page: Int, limit: Int): List<ArtPreview> =
+        throw IllegalStateException("Not supported")
 
-    override suspend fun getArt(id: String): Art {
-        TODO("Not yet implemented")
+    override suspend fun getArt(id: String): Art? {
+        val savedArtDto = context.datastore.data.first()
+        return savedArtDto.artList.firstOrNull {
+            it.id == id
+        }
     }
 
     override suspend fun saveArt(art: Art) {

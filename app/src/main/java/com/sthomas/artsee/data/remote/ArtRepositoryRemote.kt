@@ -18,12 +18,20 @@ class ArtRepositoryRemote @Inject constructor(
     }
 
     override suspend fun getArt(id: String): Art? {
-        TODO("Not yet implemented")
+        return artRemoteAPI.getArt(id).art.toArt()
     }
 
     override suspend fun saveArt(art: Art) = throw IllegalStateException("Not supported")
 
     override fun getArtPreviews(): Flow<List<ArtPreview>> = throw IllegalStateException("Not supported")
+
+    private fun ArtDto.toArt() = Art(
+        id = id.toString(),
+        title = title,
+        imageUrl = "https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg",
+        artistName = artist,
+        year = yearCreated?.toString()
+    )
 
     private fun ArtDto.toArtPreview() = ArtPreview(
         artId = id.toString(),
