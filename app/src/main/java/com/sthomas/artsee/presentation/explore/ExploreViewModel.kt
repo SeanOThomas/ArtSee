@@ -13,7 +13,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class ExploreViewModel @Inject constructor(
-    @Named(Keys.explore)
+    @Named(Keys.remote)
     private val artRepository: ArtRepository,
 ) : ViewModel() {
 

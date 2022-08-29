@@ -11,7 +11,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class SavedViewModel @Inject constructor(
-    @Named(Keys.saved)
+    @Named(Keys.storage)
     private val artRepository: ArtRepository
 ) : ViewModel() {
 

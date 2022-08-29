@@ -17,7 +17,7 @@ class ArtRepositoryRemote @Inject constructor(
             .map { it.toArtPreview() }
     }
 
-    override suspend fun getArt(id: String): Art {
+    override suspend fun getArt(id: String): Art? {
         TODO("Not yet implemented")
     }
 

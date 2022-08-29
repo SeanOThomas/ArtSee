@@ -13,14 +13,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.modules.EmptySerializersModule
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.create
-import java.util.logging.Level
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -58,14 +55,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    @Named(Keys.explore)
+    @Named(Keys.remote)
     fun provideExploreArtRepository(artRemoteAPI: ArtRemoteAPI): ArtRepository {
         return ArtRepositoryRemote(artRemoteAPI)
     }
 
     @Provides
     @Singleton
-    @Named(Keys.saved)
+    @Named(Keys.storage)
     fun provideSavedArtRepository(@ApplicationContext context: Context): ArtRepository {
         return ArtRepositoryStorage(context)
     }
