@@ -9,7 +9,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.sthomas.artsee.R
 
-
 @Composable
 fun MainScreen(navController: NavHostController) {
     val tabs = listOf(stringResource(R.string.explore), stringResource(R.string.saved))

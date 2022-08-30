@@ -30,13 +30,13 @@ class ArtRepositoryRemote @Inject constructor(
     private fun ArtDto.toArt() = Art(
         id = id.toString(),
         title = title,
-        imageUrl = "https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg",
+        imageUrl = "https://www.artic.edu/iiif/2/${imageId}/full/1150,/0/default.jpg",
         artistName = artist,
         year = yearCreated?.toString()
     )
 
     private fun ArtDto.toArtPreview() = ArtPreview(
         artId = id.toString(),
-        thumbnail = "https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg"
+        thumbnail = "https://www.artic.edu/iiif/2/${imageId}/full/650,/0/default.jpg"
     )
 }
