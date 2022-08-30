@@ -1,5 +1,6 @@
 package com.sthomas.artsee.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,14 +9,17 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.sthomas.artsee.R
 import com.sthomas.artsee.presentation.art_detail.ArtDetailViewModel
 
@@ -25,7 +29,12 @@ fun ArtDetailScreen(
 ) {
     val state = artDetailViewModel.state
     if (state.isLoading) {
-        CircularProgressIndicator()
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            CircularProgressIndicator()
+        }
     } else {
         requireNotNull(state.art)
         val scrollState = rememberScrollState()
@@ -35,9 +44,32 @@ fun ArtDetailScreen(
                     .fillMaxWidth()
                     .verticalScroll(scrollState)
             ) {
-                AsyncImage(
-                    model = imageUrl,
+
+                SubcomposeAsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(imageUrl)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = null,
+                    loading = {
+                        Box(
+                            Modifier
+                                .height(dimensionResource(id = R.dimen.art_detail_loading_height))
+                                .fillMaxWidth()
+                                .background(
+                                    brush =  Brush.linearGradient(
+                                        listOf(
+                                            Color(0xFFbfbfbf),
+                                            Color(0xFFf2f2f2)
+                                        )
+                                    )
+                                )
+                        ) {
+                            CircularProgressIndicator(
+                                Modifier.align(Alignment.Center)
+                            )
+                        }
+                    }
                 )
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
                 Text(
@@ -66,7 +98,8 @@ fun ArtDetailScreen(
                     )
                 }
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
-                val buttonText = stringResource(if (state.isSaved) R.string.unsave else R.string.save)
+                val buttonText =
+                    stringResource(if (state.isSaved) R.string.unsave else R.string.save)
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -75,14 +108,18 @@ fun ArtDetailScreen(
                             horizontal = dimensionResource(id = R.dimen.padding)
                         ),
                     onClick = {
-                    artDetailViewModel.saveArt()
-                }) {
+                        artDetailViewModel.saveArt()
+                    }) {
                     Text(text = buttonText)
                 }
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
             }
         }
     }
+}
+
+@Composable
+fun LoadingArtDetail() {
 
 }
 

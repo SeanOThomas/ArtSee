@@ -1,17 +1,26 @@
 package com.sthomas.artsee.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
+import com.sthomas.artsee.R
 import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.presentation.explore.ExploreViewModel
 
@@ -50,9 +59,32 @@ fun PreviewCard(artPreview: ArtPreview, onArtPreviewTap: (String) -> Unit) {
                 onArtPreviewTap(artPreview.artId)
             }
     ) {
-        AsyncImage(
-            model = artPreview.thumbnail,
+        SubcomposeAsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(artPreview.thumbnail)
+                .crossfade(true)
+                .build(),
             contentDescription = null,
+            loading = {
+                Box(
+                    Modifier
+                        .height(dimensionResource(id = R.dimen.art_preview_loading_height))
+                        .fillMaxWidth()
+                        .background(
+                            brush =  Brush.linearGradient(
+                                listOf(
+                                    Color(0xFFbfbfbf),
+                                    Color(0xFFf2f2f2)
+                                )
+                            )
+                        )
+
+                ) {
+//                    CircularProgressIndicator(
+//                        Modifier.align(Alignment.Center)
+//                    )
+                }
+            }
         )
     }
 }
