@@ -2,4 +2,6 @@
     <string name="app_name">ArtSee</string>
     <string name="explore">Explore</string>
     <string name="saved">Saved</string>
+    <string name="unsave">Unsave</string>
+    <string name="save">Save</string>
 </resources>

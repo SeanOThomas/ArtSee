@@ -59,14 +59,27 @@ class ArtDetailViewModel @Inject constructor(
 
     fun saveArt() {
         viewModelScope.launch {
-            state = state.copy(
-                isSaving = true,
-            )
-            storageRepository.saveArt(checkNotNull(state.art))
-            state = state.copy(
-                isSaving = false,
-                isSaved = true
-            )
+            if (state.isSaved) {
+                // unsave the art
+                state = state.copy(
+                    isSaving = true,
+                )
+                storageRepository.unsaveArt(checkNotNull(state.art))
+                state = state.copy(
+                    isSaving = false,
+                    isSaved = false
+                )
+            } else {
+                // save the art
+                state = state.copy(
+                    isSaving = true,
+                )
+                storageRepository.saveArt(checkNotNull(state.art))
+                state = state.copy(
+                    isSaving = false,
+                    isSaved = true
+                )
+            }
         }
     }
 }

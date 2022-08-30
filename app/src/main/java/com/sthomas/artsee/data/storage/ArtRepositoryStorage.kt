@@ -34,9 +34,17 @@ class ArtRepositoryStorage(
     }
 
     override suspend fun saveArt(art: Art) {
-        context.datastore.updateData {
-            it.copy(
-                artList = it.artList.plus(art)
+        context.datastore.updateData { savedArtDto ->
+            savedArtDto.copy(
+                artList = savedArtDto.artList.plus(art)
+            )
+        }
+    }
+
+    override suspend fun unsaveArt(art: Art) {
+        context.datastore.updateData { savedArtDto ->
+            savedArtDto.copy(
+                artList = savedArtDto.artList.filterNot { it.id == art.id }
             )
         }
     }

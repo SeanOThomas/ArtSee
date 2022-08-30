@@ -23,6 +23,8 @@ class ArtRepositoryRemote @Inject constructor(
 
     override suspend fun saveArt(art: Art) = throw IllegalStateException("Not supported")
 
+    override suspend fun unsaveArt(art: Art) = throw IllegalStateException("Not supported")
+
     override fun getArtPreviews(): Flow<List<ArtPreview>> = throw IllegalStateException("Not supported")
 
     private fun ArtDto.toArt() = Art(
