@@ -28,9 +28,9 @@ fun MainScreen(navController: NavHostController) {
             navController.navigate("${Routes.artDetail}/$artId")
         }
         if (selectedTabIndex == 0) {
-            ExploreList(onArtPreviewTap = ::onArtPreviewTap)
+            ExploreList(::onArtPreviewTap)
         } else {
-            SavedList(onArtPreviewTap = ::onArtPreviewTap)
+            SavedList(::onArtPreviewTap)
         }
     }
 }

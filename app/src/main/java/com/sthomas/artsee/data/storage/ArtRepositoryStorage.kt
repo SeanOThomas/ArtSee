@@ -19,8 +19,8 @@ class ArtRepositoryStorage(
     private val context: Context
 ) : ArtRepository {
 
-    override fun getArtPreviews(): Flow<List<ArtPreview>> {
-        return context.datastore.data.map { it.toArtPreviews() }
+    override fun getArtPreviews(): Flow<List<Art>> {
+        return context.datastore.data.map { it.artList }
     }
 
     override suspend fun getPagedArtPreviews(page: Int, limit: Int): List<ArtPreview> =
