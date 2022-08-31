@@ -4,4 +4,5 @@
     <string name="saved">Saved</string>
     <string name="unsave">Unsave</string>
     <string name="save">Save</string>
+    <string name="saved_art_empty_message">Your saved art lives here.</string>
 </resources>

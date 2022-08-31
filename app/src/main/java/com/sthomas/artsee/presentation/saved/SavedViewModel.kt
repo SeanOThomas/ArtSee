@@ -5,6 +5,7 @@ import com.sthomas.artsee.di.Keys
 import com.sthomas.artsee.domain.model.Art
 import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.domain.repository.ArtRepository
+import com.sthomas.artsee.domain.repository.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class SavedViewModel @Inject constructor(
     private val artRepository: ArtRepository
 ) : ViewModel() {
 
-    fun getSavedArtList() : Flow<List<Art>> {
+    fun getSavedArtList() : Flow<Resource<List<Art>>> {
         return artRepository.getArtPreviews()
     }
 }

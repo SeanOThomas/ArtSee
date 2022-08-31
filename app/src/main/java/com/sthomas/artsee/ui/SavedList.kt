@@ -1,6 +1,5 @@
 package com.sthomas.artsee.ui
 
-import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,11 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.sthomas.artsee.R
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.sthomas.artsee.domain.model.Art
+import com.sthomas.artsee.domain.repository.Resource
 import com.sthomas.artsee.presentation.saved.SavedViewModel
 
 @Composable
@@ -24,29 +25,35 @@ fun SavedList(
     onArtTap: (String) -> Unit
 ) {
     val savedViewModel = hiltViewModel<SavedViewModel>()
-    val artList = savedViewModel.getSavedArtList().collectAsState(initial = listOf()).value
-    if (artList.isEmpty()) {
-        EmptyPage()
-    } else {
-        LazyColumn(
-            contentPadding = PaddingValues(10.dp),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding)),
+    val resource = savedViewModel.getSavedArtList().collectAsState(initial = Resource.Success(data = listOf())).value
+    if (resource is Resource.Success) {
+        val artList: List<Art> = checkNotNull(resource.data)
+        if (artList.isEmpty()) {
+            EmptyState()
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(10.dp),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding)),
             ) {
-            items(artList) {
-                SavedCard(it, onArtTap)
+                items(resource.data) {
+                    SavedCard(it, onArtTap)
+                }
             }
         }
+    } else {
+        // TODO show error state
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun EmptyPage() {
+fun EmptyState() {
     Column (
+        Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Your saved art lives here.")
+        Text(text = stringResource(R.string.saved_art_empty_message))
     }
 }
 
@@ -69,9 +76,6 @@ fun SavedCard(
         )
         Column {
             Text(text = art.title)
-//            if (art.artistName.isNullOrEmpty().not()) {
-//                Text(text = art.artistName!!)
-//            }
             if (art.year.isNullOrEmpty().not()) {
                 Text(text = art.year!!)
             }

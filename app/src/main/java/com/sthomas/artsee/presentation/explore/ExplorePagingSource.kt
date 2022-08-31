@@ -1,31 +1,29 @@
 package com.sthomas.artsee.presentation.explore
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sthomas.artsee.domain.model.ArtPreview
 import com.sthomas.artsee.domain.repository.ArtRepository
+import com.sthomas.artsee.domain.repository.Resource
 import javax.inject.Inject
 
 class ExplorePagingSource @Inject constructor(
     private val artRepository: ArtRepository
-) :  PagingSource<Int, ArtPreview>() {
+) : PagingSource<Int, ArtPreview>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArtPreview> {
-        return try {
-            val page = params.key ?: 1
-            val artworkList = artRepository.getPagedArtPreviews(
-                page = page,
-                limit = 20
-            )
-            Log.d(TAG, "artworkList size: ${artworkList.size}")
+        val page = params.key ?: 1
+        val resource = artRepository.getPagedArtPreviews(
+            page = page,
+            limit = 20
+        )
+        return if (resource is Resource.Success) {
             LoadResult.Page(
-                data = artworkList,
-                prevKey = null, // only page forward
+                data = resource.data as List<ArtPreview>,
+                prevKey = if (page == 1) null else page - 1,
                 nextKey = page + 1
             )
-        } catch (e: Exception) {
-            Log.e(TAG, "Error requesting paged data: $e")
-            LoadResult.Error(e)
+        } else {
+            LoadResult.Error(Throwable(message = resource.message))
         }
     }
 
@@ -33,8 +31,5 @@ class ExplorePagingSource @Inject constructor(
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey
         }
-    }
-    companion object {
-        const val TAG = "ExplorePagingSource"
     }
 }

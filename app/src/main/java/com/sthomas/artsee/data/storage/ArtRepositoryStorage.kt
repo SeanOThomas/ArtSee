@@ -21,12 +21,12 @@ class ArtRepositoryStorage(
         return try {
             context.datastore.data.map {
                 Resource.Success(
-                    data = it.artList
+                    data = it.artList.reversed()
                 )
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            flow<Resource<List<Art>>> {
+            return flow {
                 emit(
                     Resource.Error(e.message ?: "An unknown error occurred.")
                 )
