@@ -11,6 +11,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import javax.inject.Named
 
+/**
+ * Expose paging data for the 'Explore' tab of the home screen.
+ */
 @HiltViewModel
 class ExploreViewModel @Inject constructor(
     @Named(Keys.remote)

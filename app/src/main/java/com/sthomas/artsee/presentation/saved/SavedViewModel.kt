@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Named
 
+/**
+ * Expose a Flow of saved art for the 'Saved' tab on the main screen.
+ */
 @HiltViewModel
 class SavedViewModel @Inject constructor(
     @Named(Keys.storage)

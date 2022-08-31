@@ -33,9 +33,9 @@ fun ExploreList(
     println(pagingArtPreviews.itemCount)
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 145.dp),
-        contentPadding = PaddingValues(10.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+        contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding))
     ) {
         items(pagingArtPreviews.itemCount) { index ->
             pagingArtPreviews[index]?.let {
@@ -71,7 +71,7 @@ fun PreviewCard(artPreview: ArtPreview, onArtPreviewTap: (String) -> Unit) {
                         .height(dimensionResource(id = R.dimen.art_preview_loading_height))
                         .fillMaxWidth()
                         .background(
-                            brush =  Brush.linearGradient(
+                            brush = Brush.linearGradient(
                                 listOf(
                                     Color(0xFFbfbfbf),
                                     Color(0xFFf2f2f2)
@@ -79,11 +79,7 @@ fun PreviewCard(artPreview: ArtPreview, onArtPreviewTap: (String) -> Unit) {
                             )
                         )
 
-                ) {
-//                    CircularProgressIndicator(
-//                        Modifier.align(Alignment.Center)
-//                    )
-                }
+                )
             }
         )
     }
