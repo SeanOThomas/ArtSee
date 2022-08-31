@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 class FakeRepository(
 ) : ArtRepository {
 
-    var artList = mutableListOf<Art>()
+    val artList = mutableListOf<Art>()
     var isError: Boolean = false
 
     override suspend fun getArt(id: String): Resource<Art> {

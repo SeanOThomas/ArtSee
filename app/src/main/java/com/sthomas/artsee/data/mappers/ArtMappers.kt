@@ -17,7 +17,3 @@ fun ArtDto.toArtPreview() = ArtPreview(
     artId = id.toString(),
     thumbnail = "https://www.artic.edu/iiif/2/${imageId}/full/650,/0/default.jpg"
 )
-
-fun SavedArtDto.toArtPreviews() = artList.map {
-    ArtPreview(it.id, it.imageUrl)
-}

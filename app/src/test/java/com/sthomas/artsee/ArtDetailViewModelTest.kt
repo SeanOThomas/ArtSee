@@ -27,7 +27,6 @@ class ArtDetailViewModelTest {
         isSaved = false
     )
 
-
     private lateinit var storageRepository: ArtRepository
     private lateinit var remoteRepository: ArtRepository
     private lateinit var artDetailViewModel: ArtDetailViewModel
@@ -49,14 +48,7 @@ class ArtDetailViewModelTest {
 
     @Test
     fun `Art is saved if found in storage`() = runBlocking {
-        (storageRepository as FakeRepository).artList.addAll(
-            listOf(
-                getFakeArt(targetArtId),
-                getFakeArt(),
-                getFakeArt(),
-                getFakeArt()
-            ).shuffled()
-        )
+        (storageRepository as FakeRepository).addShuffledArtList(includeTargetArt = true)
 
         artDetailViewModel = ArtDetailViewModel(
             remoteRepository,
@@ -80,23 +72,12 @@ class ArtDetailViewModelTest {
 
     @Test
     fun `Get art from remote if storage error`() = runBlocking {
-        (storageRepository as FakeRepository).artList.addAll(
-            listOf(
-                getFakeArt(targetArtId),
-                getFakeArt(),
-                getFakeArt(),
-                getFakeArt()
-            ).shuffled()
-        )
-        (storageRepository as FakeRepository).isError = true
-        (remoteRepository as FakeRepository).artList.addAll(
-            listOf(
-                getFakeArt(targetArtId),
-                getFakeArt(),
-                getFakeArt(),
-                getFakeArt()
-            ).shuffled()
-        )
+        (storageRepository as FakeRepository).apply {
+            addShuffledArtList(includeTargetArt = true)
+            isError = true
+        }
+        (remoteRepository as FakeRepository).addShuffledArtList(includeTargetArt = true)
+
 
         artDetailViewModel = ArtDetailViewModel(
             remoteRepository,
@@ -120,14 +101,7 @@ class ArtDetailViewModelTest {
 
     @Test
     fun `Get art from remote if not saved`() = runBlocking {
-        (remoteRepository as FakeRepository).artList.addAll(
-            listOf(
-                getFakeArt(targetArtId),
-                getFakeArt(),
-                getFakeArt(),
-                getFakeArt()
-            ).shuffled()
-        )
+        (remoteRepository as FakeRepository).addShuffledArtList(includeTargetArt = true)
 
         artDetailViewModel = ArtDetailViewModel(
             remoteRepository,
@@ -151,15 +125,10 @@ class ArtDetailViewModelTest {
 
     @Test
     fun `Get error if there's a remote error`() = runBlocking {
-        (remoteRepository as FakeRepository).artList.addAll(
-            listOf(
-                getFakeArt(targetArtId),
-                getFakeArt(),
-                getFakeArt(),
-                getFakeArt()
-            ).shuffled()
-        )
-        (remoteRepository as FakeRepository).isError = true
+        (remoteRepository as FakeRepository).apply {
+            addShuffledArtList(includeTargetArt = true)
+            (remoteRepository as FakeRepository).isError = true
+        }
 
         artDetailViewModel = ArtDetailViewModel(
             remoteRepository,
@@ -178,6 +147,22 @@ class ArtDetailViewModelTest {
             assert(art == null)
             assert(error != null)
         }
+    }
+
+    private fun FakeRepository.addShuffledArtList(includeTargetArt: Boolean = true) {
+        val artList = mutableListOf(
+            getFakeArt(),
+            getFakeArt(),
+            getFakeArt()
+        )
+
+        if (includeTargetArt) {
+            artList.add(getFakeArt(targetArtId))
+        }
+
+        this.artList.addAll(
+            artList.shuffled()
+        )
     }
 
     private fun getFakeArt(artId: String = generateRandomId()) = Art(
