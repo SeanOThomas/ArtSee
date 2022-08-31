@@ -7,4 +7,5 @@ data class ArtDetailState(
     val isLoading: Boolean,
     val isSaving: Boolean,
     val isSaved: Boolean,
+    val error: String? = null
 )

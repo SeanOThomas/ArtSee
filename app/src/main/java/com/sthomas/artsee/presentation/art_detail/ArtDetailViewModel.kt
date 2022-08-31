@@ -41,19 +41,11 @@ class ArtDetailViewModel @Inject constructor(
             // in case the art was saved, try to load art from storage
             // before loading from remote.
             val artFromStorage = storageRepository.getArt(artId)
-            state = if (artFromStorage != null) {
-                state.copy(
-                    art = artFromStorage,
-                    isLoading = false,
-                    isSaved = true
-                )
-            } else {
-                val artFromRemote = remoteRepository.getArt(artId)
-                state.copy(
-                    art = artFromRemote,
-                    isLoading = false,
-                )
-            }
+            state = state.copy(
+                art = artFromStorage.data,
+                isLoading = false,
+                isSaved = true
+            )
         }
     }
 

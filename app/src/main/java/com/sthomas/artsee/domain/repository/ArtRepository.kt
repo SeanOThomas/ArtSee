@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface ArtRepository {
-    fun getArtPreviews() : Flow<List<Art>>
-    suspend fun getPagedArtPreviews(page: Int, limit: Int) : List<ArtPreview>
-    suspend fun getArt(id: String) : Art?
-    suspend fun saveArt(art: Art)
-    suspend fun unsaveArt(art: Art)
+    fun getArtPreviews() : Flow<Resource<List<Art>>>
+    suspend fun getPagedArtPreviews(page: Int, limit: Int) : Resource<List<ArtPreview>>
+    suspend fun getArt(id: String) : Resource<Art>
+    suspend fun saveArt(art: Art) : Resource<Boolean>
+    suspend fun unsaveArt(art: Art) : Resource<Boolean>
 }

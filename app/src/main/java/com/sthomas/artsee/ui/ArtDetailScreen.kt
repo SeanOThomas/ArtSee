@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import coil.size.Scale
 import com.sthomas.artsee.R
 import com.sthomas.artsee.presentation.art_detail.ArtDetailViewModel
 
@@ -46,7 +47,11 @@ fun ArtDetailScreen(
             ) {
 
                 SubcomposeAsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(alignment = Alignment.CenterHorizontally),
                     model = ImageRequest.Builder(LocalContext.current)
+                        .scale(Scale.FILL)
                         .data(imageUrl)
                         .crossfade(true)
                         .build(),
@@ -98,6 +103,9 @@ fun ArtDetailScreen(
                     )
                 }
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
                 val buttonText =
                     stringResource(if (state.isSaved) R.string.unsave else R.string.save)
                 Button(
@@ -112,6 +120,7 @@ fun ArtDetailScreen(
                     }) {
                     Text(text = buttonText)
                 }
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
             }
         }
