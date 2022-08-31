@@ -1,13 +1,11 @@
 package com.sthomas.artsee.presentation.art_detail
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sthomas.artsee.common.arch.StateViewModel
 import com.sthomas.artsee.di.Keys
 import com.sthomas.artsee.domain.repository.ArtRepository
+import com.sthomas.artsee.domain.repository.Resource
 import com.sthomas.artsee.ui.Args
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,10 +20,7 @@ class ArtDetailViewModel @Inject constructor(
     private val storageRepository: ArtRepository,
     initialState: ArtDetailState,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
-
-    var state by mutableStateOf(initialState)
-        private set
+) : StateViewModel<ArtDetailState>(initialState) {
 
     init {
         savedStateHandle.get<String>(Args.artId)?.let {
@@ -33,44 +28,89 @@ class ArtDetailViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Retrieve art data for the provided [artId]. In the case the art was saved,
+     * first try storage, then try remote.
+     */
     private fun getArtDetail(artId: String) {
         viewModelScope.launch {
-            state = state.copy(
-                isLoading = true,
-            )
-            // in case the art was saved, try to load art from storage
-            // before loading from remote.
-            val artFromStorage = storageRepository.getArt(artId)
-            state = state.copy(
-                art = artFromStorage.data,
-                isLoading = false,
-                isSaved = true
-            )
+            setState {
+                copy(isLoading = true)
+            }
+            val resourceFromStorage = storageRepository.getArt(artId)
+            if (resourceFromStorage is Resource.Success && resourceFromStorage.data != null) {
+                setState {
+                    copy(
+                        art = resourceFromStorage.data,
+                        isLoading = false,
+                        isSaved = true
+                    )
+                }
+            } else {
+                val resourceFromRemote = remoteRepository.getArt(artId)
+                if (resourceFromRemote is Resource.Success) {
+                    setState {
+                        copy(
+                            art = resourceFromRemote.data,
+                            isLoading = false,
+                        )
+                    }
+                } else {
+                    setState {
+                        copy(
+                            isLoading = false,
+                            error = resourceFromStorage.message
+                        )
+                    }
+                }
+            }
         }
     }
 
+    /**
+     * Handles both save and unsave button clicks.
+     */
     fun saveArt() {
         viewModelScope.launch {
+            setState {
+                copy(isSaving = true)
+            }
             if (state.isSaved) {
                 // unsave the art
-                state = state.copy(
-                    isSaving = true,
-                )
-                storageRepository.unsaveArt(checkNotNull(state.art))
-                state = state.copy(
-                    isSaving = false,
-                    isSaved = false
-                )
+                val resource = storageRepository.unsaveArt(checkNotNull(state.art))
+                if (resource is Resource.Success) {
+                    setState {
+                        copy(
+                            isSaving = false,
+                            isSaved = false
+                        )
+                    }
+                } else {
+                    setState {
+                        copy(
+                            isSaving = false,
+                            error = resource.message
+                        )
+                    }
+                }
             } else {
                 // save the art
-                state = state.copy(
-                    isSaving = true,
-                )
-                storageRepository.saveArt(checkNotNull(state.art))
-                state = state.copy(
-                    isSaving = false,
-                    isSaved = true
-                )
+                val resource = storageRepository.saveArt(checkNotNull(state.art))
+                if (resource is Resource.Success) {
+                    setState {
+                        copy(
+                            isSaving = false,
+                            isSaved = true
+                        )
+                    }
+                } else {
+                    setState {
+                        copy(
+                            isSaving = false,
+                            error = resource.message
+                        )
+                    }
+                }
             }
         }
     }
