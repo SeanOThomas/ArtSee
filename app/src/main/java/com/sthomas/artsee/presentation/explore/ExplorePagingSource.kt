@@ -14,7 +14,7 @@ class ExplorePagingSource @Inject constructor(
         val page = params.key ?: 1
         val resource = artRepository.getPagedArtPreviews(
             page = page,
-            limit = 20
+            limit = 10
         )
         return if (resource is Resource.Success) {
             LoadResult.Page(

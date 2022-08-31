@@ -15,5 +15,5 @@ fun ArtDto.toArt() = Art(
 
 fun ArtDto.toArtPreview() = ArtPreview(
     artId = id.toString(),
-    thumbnail = "https://www.artic.edu/iiif/2/${imageId}/full/650,/0/default.jpg"
+    thumbnail = "https://www.artic.edu/iiif/2/${imageId}/full/550,/0/default.jpg"
 )
