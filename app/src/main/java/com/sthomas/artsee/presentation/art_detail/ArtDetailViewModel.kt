@@ -59,7 +59,7 @@ class ArtDetailViewModel @Inject constructor(
                     setState {
                         copy(
                             isLoading = false,
-                            error = resourceFromStorage.message
+                            error = resourceFromRemote.message
                         )
                     }
                 }
