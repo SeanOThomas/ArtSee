@@ -1,6 +1,5 @@
 package com.sthomas.artsee.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,8 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -23,6 +20,9 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import com.sthomas.artsee.R
 import com.sthomas.artsee.presentation.art_detail.ArtDetailViewModel
+import com.sthomas.artsee.ui.common.ExtraLargeVerticalSpacer
+import com.sthomas.artsee.ui.common.LargeVerticalSpacer
+import com.sthomas.artsee.ui.common.VerticalSpacer
 
 @Composable
 fun ArtDetailScreen(
@@ -75,7 +75,7 @@ fun ArtDetailScreen(
                     style = MaterialTheme.typography.h3,
                 )
                 if (artistName != null) {
-                    Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                    VerticalSpacer()
                     Text(
                         modifier = Modifier.padding(
                             horizontal = dimensionResource(id = R.dimen.padding),
@@ -84,7 +84,7 @@ fun ArtDetailScreen(
                     )
                 }
                 if (year != null) {
-                    Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                    VerticalSpacer()
                     Text(
                         modifier = Modifier.padding(
                             horizontal = dimensionResource(id = R.dimen.padding),
@@ -92,10 +92,7 @@ fun ArtDetailScreen(
                         text = "circa $year"
                     )
                 }
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                ExtraLargeVerticalSpacer()
                 val buttonText =
                     stringResource(if (state.isSaved) R.string.unsave else R.string.save)
                 Button(
@@ -110,17 +107,10 @@ fun ArtDetailScreen(
                     }) {
                     Text(text = buttonText)
                 }
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.padding)))
+                LargeVerticalSpacer()
             }
         }
     }
 }
-
-@Composable
-fun LoadingArtDetail() {
-
-}
-
 
 
