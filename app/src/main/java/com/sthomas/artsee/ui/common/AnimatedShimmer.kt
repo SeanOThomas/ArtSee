@@ -1,4 +1,4 @@
-package com.sthomas.artsee.ui
+package com.sthomas.artsee.ui.common
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background

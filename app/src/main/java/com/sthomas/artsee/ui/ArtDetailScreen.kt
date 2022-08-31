@@ -20,6 +20,7 @@ import coil.request.ImageRequest
 import coil.size.Scale
 import com.sthomas.artsee.R
 import com.sthomas.artsee.presentation.art_detail.ArtDetailViewModel
+import com.sthomas.artsee.ui.common.AnimatedShimmer
 import com.sthomas.artsee.ui.common.ExtraLargeVerticalSpacer
 import com.sthomas.artsee.ui.common.LargeVerticalSpacer
 import com.sthomas.artsee.ui.common.VerticalSpacer
