@@ -57,21 +57,11 @@ fun ArtDetailScreen(
                         .build(),
                     contentDescription = null,
                     loading = {
-                        Box(
-                            Modifier
-                                .height(dimensionResource(id = R.dimen.art_detail_loading_height))
-                                .fillMaxWidth()
-                                .background(
-                                    brush =  Brush.linearGradient(
-                                        listOf(
-                                            Color(0xFFbfbfbf),
-                                            Color(0xFFf2f2f2)
-                                        )
-                                    )
-                                )
-                        ) {
-                            CircularProgressIndicator(
-                                Modifier.align(Alignment.Center)
+                        AnimatedShimmer {
+                            Box(
+                                modifier = Modifier
+                                    .height(dimensionResource(id = R.dimen.art_detail_loading_height))
+                                    .fillMaxWidth()
                             )
                         }
                     }
